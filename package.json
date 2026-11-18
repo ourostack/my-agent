@@ -1,0 +1,8 @@
+{
+  "name": "tiny-agent",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "openai": "^6.0.0"
+  }
+}
