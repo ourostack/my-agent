@@ -19,6 +19,10 @@ const conversation = existsSync("what-the-model-sees.json")
 // My name, shown before each reply so you can tell who is talking.
 const name = "Pip";
 
+// AGENTS.md is a note for any agent working in this folder. Read it fresh at every start
+// and put it first in what the model sees, so the model follows it.
+const instructions = { role: "system", content: readFileSync("AGENTS.md", "utf8") };
+
 const keyboard = createInterface({ input: process.stdin, output: process.stdout });
 keyboard.on("close", () => process.exit(0)); // Ctrl+D or Ctrl+C quits
 
@@ -83,7 +87,7 @@ async function askTheModel() {
     max_tokens: 128_000,
     stream: true,
     tools: tools(),
-    messages: conversation,
+    messages: [instructions, ...conversation],
   });
 
   process.stdout.write(`${name}: `);
@@ -115,7 +119,7 @@ async function askTheModel() {
 
 // Save exactly what the model sees, so you can open it and look.
 function save() {
-  const request = { model: "claude-opus-5.5", tools: tools(), messages: conversation };
+  const request = { model: "claude-opus-5.5", tools: tools(), messages: [instructions, ...conversation] };
   writeFileSync("what-the-model-sees.json", JSON.stringify(request, null, 2));
 }
 
