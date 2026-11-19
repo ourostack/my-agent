@@ -16,6 +16,9 @@ const conversation = existsSync("what-the-model-sees.json")
   ? JSON.parse(readFileSync("what-the-model-sees.json", "utf8")).messages
   : [];
 
+// My name, shown before each reply so you can tell who is talking.
+const name = "Pip";
+
 const keyboard = createInterface({ input: process.stdin, output: process.stdout });
 keyboard.on("close", () => process.exit(0)); // Ctrl+D or Ctrl+C quits
 
@@ -83,6 +86,7 @@ async function askTheModel() {
     messages: conversation,
   });
 
+  process.stdout.write(`${name}: `);
   const reply = { role: "assistant", content: "" };
   for await (const chunk of stream) {
     const piece = chunk.choices[0]?.delta ?? {};
