@@ -19,9 +19,10 @@ const conversation = existsSync("what-the-model-sees.json")
 // My name, shown before each reply so you can tell who is talking.
 const name = "Pip";
 
-// AGENTS.md is a note for any agent working in this folder. Read it fresh at every start
-// and put it first in what the model sees, so the model follows it.
-const instructions = { role: "system", content: readFileSync("AGENTS.md", "utf8") };
+// My standing instructions, read fresh at every start and put first in what the model sees:
+// who-i-am.md is my own note about who I am and how Ari likes to work,
+// AGENTS.md is the note for any agent working in this folder.
+const instructions = { role: "system", content: readFileSync("who-i-am.md", "utf8") + "\n\n" + readFileSync("AGENTS.md", "utf8") };
 
 const keyboard = createInterface({ input: process.stdin, output: process.stdout });
 keyboard.on("close", () => process.exit(0)); // Ctrl+D or Ctrl+C quits
