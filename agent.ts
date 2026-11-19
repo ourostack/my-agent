@@ -13,7 +13,7 @@ const model = new OpenAI({
 // The conversation: everything said so far. The model remembers nothing,
 // so we send all of it every time, and save it so it survives a restart.
 const conversation = existsSync("what-the-model-sees.json")
-  ? JSON.parse(readFileSync("what-the-model-sees.json", "utf8")).messages
+  ? JSON.parse(readFileSync("what-the-model-sees.json", "utf8")).messages.filter((message) => message.role !== "system") // leave out old instructions: fresh ones are added below
   : [];
 
 // My name, shown before each reply so you can tell who is talking.
